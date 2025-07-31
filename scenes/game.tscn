@@ -1,7 +1,96 @@
-[gd_scene load_steps=2 format=3 uid="uid://bql784442i3pp"]
+[gd_scene load_steps=7 format=3 uid="uid://bql784442i3pp"]
 
 [ext_resource type="Script" uid="uid://b25q4ytl1giyh" path="res://scenes/game_manager.gd" id="1_uwrxv"]
+[ext_resource type="Shader" uid="uid://dom5cd6gdvxn3" path="res://assets/shaders/fade-transition.gdshader" id="2_yqjtg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lnu2h"]
+shader = ExtResource("2_yqjtg")
+shader_parameter/AspectRatio = 1.0
+shader_parameter/Diamonds = 20.0
+shader_parameter/pixel_size = 0.08
+shader_parameter/height = 1.0
+shader_parameter/disable_pixel = true
+
+[sub_resource type="Animation" id="Animation_yqjtg"]
+resource_name = "transition"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Transition:material:shader_parameter/height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4995, 0.999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, -1.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Transition:rotation")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4995, 0.999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 3.14159, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_lnu2h"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Transition:material:shader_parameter/height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Transition:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lbhrr"]
+_data = {
+&"RESET": SubResource("Animation_lnu2h"),
+&"transition": SubResource("Animation_yqjtg")
+}
 
 [node name="Game" type="Node2D" groups=["game_mgr"]]
 texture_filter = 1
 script = ExtResource("1_uwrxv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="Transition" type="ColorRect" parent="CanvasLayer"]
+z_index = 4
+texture_filter = 1
+material = SubResource("ShaderMaterial_lnu2h")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(320, 180)
+mouse_filter = 2
+
+[node name="TransitionAnimator" type="AnimationPlayer" parent="CanvasLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_lbhrr")
+}

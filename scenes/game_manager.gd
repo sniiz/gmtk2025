@@ -24,5 +24,8 @@ func load_level(level_id: int) -> void:
 	await get_tree().process_frame
 	player.global_position = player_pos
 
+func transition() -> void:
+	$CanvasLayer/TransitionAnimator.play("transition")
+
 func _ready() -> void:
 	load_level(0)

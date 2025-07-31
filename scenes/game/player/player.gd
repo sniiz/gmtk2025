@@ -21,10 +21,16 @@ var flight_direction := 0.0
 var rope_sim : Node2D
 var grapple_max_momentum : float
 var is_immobile := false
+var is_dead := false
+
 @onready var rope_prefab := preload("res://scenes/game/player/rope.tscn")
 
 func reset() -> void:
-	get_tree().reload_current_scene()
+	#get_tree().reload_current_scene()
+	var game := get_parent().get_parent()
+	game.transition()
+	await get_tree().create_timer(0.46).timeout
+	game.load_level(get_parent().level_index)
 
 func set_grappled(state: bool, grapple_path=null) -> void:
 	if is_immobile: return
@@ -47,6 +53,7 @@ func set_grappled(state: bool, grapple_path=null) -> void:
 			rope_sim.queue_free()
 
 func _process(delta: float) -> void:
+	if is_dead: return
 	var input := Input.get_axis("left", "right")
 	if input != 0.0: last_input = input
 
@@ -131,6 +138,9 @@ func _on_jump_buffer_timer_timeout() -> void:
 	buffered_jump = false
 
 func _on_hurtbox_body_entered(body: Node2D) -> void:
+	is_dead = true
+	$AnimationPlayer.play("death")
+	await get_tree().create_timer(0.5).timeout
 	reset()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
