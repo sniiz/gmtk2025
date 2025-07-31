@@ -1,0 +1,92 @@
+[gd_scene load_steps=10 format=3 uid="uid://cnnyqbsy8fpgj"]
+
+[ext_resource type="Material" uid="uid://dh3kei8ytrfyo" path="res://assets/common/bilinear.tres" id="1_i1xsh"]
+[ext_resource type="Script" uid="uid://cagu4c8674j2m" path="res://scenes/game/grapple/grapple.gd" id="2_4wo5s"]
+[ext_resource type="Texture2D" uid="uid://bqnpnaufdqecb" path="res://assets/tiles/grapple.png" id="2_a1urg"]
+[ext_resource type="Script" uid="uid://da2m0jrpnafd3" path="res://scenes/game/grapple/radius.gd" id="4_4wo5s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i1xsh"]
+radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4wo5s"]
+resource_local_to_scene = true
+radius = 150.0
+
+[sub_resource type="Animation" id="Animation_5l0dy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Grapple:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4wo5s"]
+resource_name = "scale"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Grapple:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(-3, -3),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2, 2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uxhnd"]
+_data = {
+&"RESET": SubResource("Animation_5l0dy"),
+&"scale": SubResource("Animation_4wo5s")
+}
+
+[node name="Grapple" type="StaticBody2D"]
+texture_filter = 1
+material = ExtResource("1_i1xsh")
+collision_layer = 16
+collision_mask = 0
+input_pickable = true
+script = ExtResource("2_4wo5s")
+spin_speed = null
+
+[node name="Grapple" type="Sprite2D" parent="."]
+texture = ExtResource("2_a1urg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i1xsh")
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+input_pickable = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+shape = SubResource("CircleShape2D_4wo5s")
+debug_color = Color(0, 0, 1, 0)
+
+[node name="Radius" type="Node2D" parent="."]
+modulate = Color(0.964706, 0.839216, 0.741176, 1)
+self_modulate = Color(1, 1, 1, 0.4)
+z_index = -1
+script = ExtResource("4_4wo5s")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_uxhnd")
+}
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="area_entered" from="PlayerDetector" to="." method="_on_player_detector_area_entered"]
+[connection signal="area_exited" from="PlayerDetector" to="." method="_on_player_detector_area_exited"]

@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dh3kei8ytrfyo"]
+
+[ext_resource type="Shader" uid="uid://cir2fa2loyi0h" path="res://assets/shaders/bilinear-filter.gdshader" id="1_b56bk"]
+
+[resource]
+shader = ExtResource("1_b56bk")

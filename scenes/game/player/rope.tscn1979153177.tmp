@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmwgf2rycauiv"]
+
+[ext_resource type="Script" uid="uid://b5elgel4krvr6" path="res://scenes/game/player/rope.gd" id="1_nytn0"]
+
+[node name="Rope" type="Node2D"]
+script = ExtResource("1_nytn0")
+segment_count = null
+rope_stiffness = null
+gravity = null
+
+[node name="RopeLine" type="Line2D" parent="."]
+z_index = -2
+points = PackedVector2Array(0, 0, 50, 0)
+width = 2.0
+default_color = Color(0.764706, 0.639216, 0.541176, 1)
+joint_mode = 2
+begin_cap_mode = 1
+end_cap_mode = 1

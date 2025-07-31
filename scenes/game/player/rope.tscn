@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://cmwgf2rycauiv"]
+
+[ext_resource type="Material" uid="uid://dh3kei8ytrfyo" path="res://assets/common/bilinear.tres" id="1_bwk5b"]
+[ext_resource type="Script" uid="uid://b5elgel4krvr6" path="res://scenes/game/player/rope.gd" id="1_nytn0"]
+
+[node name="Rope" type="Node2D"]
+material = ExtResource("1_bwk5b")
+script = ExtResource("1_nytn0")
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
+z_index = -2
+points = PackedVector2Array(0, 0, 50, 0)
+width = 2.0
+default_color = Color(0.764706, 0.639216, 0.541176, 1)
+joint_mode = 2
+begin_cap_mode = 1
+end_cap_mode = 1

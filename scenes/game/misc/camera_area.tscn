@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://4vrsch50218"]
+
+[ext_resource type="Script" uid="uid://c0135uhbplsiq" path="res://scenes/game/misc/camera_area.gd" id="1_3e3qg"]
+
+[node name="CameraArea" type="Node2D"]
+script = ExtResource("1_3e3qg")
+
+[node name="Player" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+input_pickable = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+
+[connection signal="area_entered" from="Player" to="." method="_on_player_area_entered"]
+[connection signal="area_exited" from="Player" to="." method="_on_player_area_exited"]

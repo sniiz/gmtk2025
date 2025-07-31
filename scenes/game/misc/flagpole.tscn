@@ -1,0 +1,75 @@
+[gd_scene load_steps=12 format=3 uid="uid://cjma6jet5qnfk"]
+
+[ext_resource type="Script" uid="uid://cbdsrpoc6tr1j" path="res://scenes/game/misc/flagpole.gd" id="1_a52sk"]
+[ext_resource type="Material" uid="uid://dh3kei8ytrfyo" path="res://assets/common/bilinear.tres" id="1_wfukn"]
+[ext_resource type="Texture2D" uid="uid://1koukuhxhjsa" path="res://assets/tiles/klim-tilemap.png" id="2_a52sk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6qt5y"]
+radius = 8.0
+height = 36.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7q8d1"]
+atlas = ExtResource("2_a52sk")
+region = Rect2(234, 216, 18, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wxmg"]
+atlas = ExtResource("2_a52sk")
+region = Rect2(252, 216, 18, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ppb4"]
+atlas = ExtResource("2_a52sk")
+region = Rect2(270, 216, 18, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x33sa"]
+atlas = ExtResource("2_a52sk")
+region = Rect2(288, 216, 18, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rsyn6"]
+atlas = ExtResource("2_a52sk")
+region = Rect2(306, 216, 18, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_in8mo"]
+atlas = ExtResource("2_a52sk")
+region = Rect2(324, 216, 18, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p8nru"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7q8d1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8wxmg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ppb4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x33sa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rsyn6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_in8mo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="Flagpole" type="StaticBody2D"]
+collision_layer = 64
+collision_mask = 64
+script = ExtResource("1_a52sk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_6qt5y")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = ExtResource("1_wfukn")
+position = Vector2(0, -18)
+sprite_frames = SubResource("SpriteFrames_p8nru")
+frame_progress = 0.909591

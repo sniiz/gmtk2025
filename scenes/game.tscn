@@ -1,3 +1,7 @@
-[gd_scene format=3 uid="uid://bql784442i3pp"]
+[gd_scene load_steps=2 format=3 uid="uid://bql784442i3pp"]
 
-[node name="Game" type="Node2D"]
+[ext_resource type="Script" uid="uid://b25q4ytl1giyh" path="res://scenes/game_manager.gd" id="1_uwrxv"]
+
+[node name="Game" type="Node2D" groups=["game_mgr"]]
+texture_filter = 1
+script = ExtResource("1_uwrxv")
