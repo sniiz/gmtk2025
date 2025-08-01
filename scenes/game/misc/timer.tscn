@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://tvvpfyjcv8ok"]
+
+[ext_resource type="Script" uid="uid://dkfhbp1dns2b8" path="res://scenes/game/misc/timer.gd" id="1_husg0"]
+
+[node name="Timer" type="CanvasLayer"]
+script = ExtResource("1_husg0")

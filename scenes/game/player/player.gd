@@ -54,7 +54,7 @@ func set_grappled(state: bool, grapple_path=null) -> void:
 
 func _process(delta: float) -> void:
 	if is_dead: return
-	var input := Input.get_axis("left", "right")
+	var input := Input.get_axis("left", "right") if !is_immobile else 0.0
 	if input != 0.0: last_input = input
 
 	$Sprite.scale.x = last_input
@@ -90,7 +90,7 @@ func _process(delta: float) -> void:
 		buffered_jump = true
 		$JumpBufferTimer.start()
 
-	if buffered_jump and (is_on_floor() || coyote):
+	if buffered_jump and (is_on_floor() || coyote) and !is_immobile:
 		velocity.y = -jump_impulse
 		jumping = true
 		buffered_jump = false
@@ -144,4 +144,27 @@ func _on_hurtbox_body_entered(body: Node2D) -> void:
 	reset()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
+	is_immobile = true
+	get_tree().get_first_node_in_group("flagpole").emit()
+	$LevelEndTimer.start()
+	var config := ConfigFile.new()
+	var err := config.load("user://save.cfg")
+	if err:
+		print(err)
+		OS.alert("Something went EXTREMELY wrong when loading your save file. Sorry!", "Oh dear")
+		get_tree().reload_current_scene()
+		return
+	var saved_progress : int = config.get_value("completion", "progress", 0)
+	config.set_value("completion", "progress", max(saved_progress, get_parent().next_level_index))
+	config.save("user://save.cfg")
+
+func death_particles() -> void:
+	if OS.get_name() == "Web":
+		$CPUParticles2D.emitting = true
+	else:
+		$GPUParticles2D.emitting = true
+
+func _on_level_end_timer_timeout() -> void:
+	get_parent().get_parent().side_transition()
+	await get_tree().create_timer(0.47).timeout
 	get_parent().get_parent().load_level(get_parent().next_level_index)

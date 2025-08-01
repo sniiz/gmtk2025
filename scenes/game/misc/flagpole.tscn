@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cjma6jet5qnfk"]
+[gd_scene load_steps=20 format=3 uid="uid://cjma6jet5qnfk"]
 
 [ext_resource type="Script" uid="uid://cbdsrpoc6tr1j" path="res://scenes/game/misc/flagpole.gd" id="1_a52sk"]
 [ext_resource type="Material" uid="uid://dh3kei8ytrfyo" path="res://assets/common/bilinear.tres" id="1_wfukn"]
@@ -58,7 +58,59 @@ animations = [{
 "speed": 15.0
 }]
 
-[node name="Flagpole" type="StaticBody2D"]
+[sub_resource type="Gradient" id="Gradient_a52sk"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.5, 0.8)
+colors = PackedColorArray(0.964706, 0.839216, 0.741176, 1, 0.764706, 0.639216, 0.541176, 1, 0.6, 0.458824, 0.466667, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6qt5y"]
+gradient = SubResource("Gradient_a52sk")
+
+[sub_resource type="Curve" id="Curve_a52sk"]
+_data = [Vector2(0.622382, 1), 0.0, 0.0390195, 0, 0, Vector2(0.999346, 0.0126405), -3.47458, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_6qt5y"]
+curve = SubResource("Curve_a52sk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a52sk"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, -1, 0)
+spread = 20.0
+initial_velocity_min = 100.0
+initial_velocity_max = 300.0
+angular_velocity_min = -336.83
+angular_velocity_max = 336.83
+gravity = Vector3(0, 130, 0)
+scale_min = 1.5
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_6qt5y")
+color_initial_ramp = SubResource("GradientTexture1D_6qt5y")
+hue_variation_min = -0.3
+hue_variation_max = 0.3
+turbulence_enabled = true
+turbulence_noise_strength = 0.1
+turbulence_noise_scale = 4.406
+
+[sub_resource type="Curve" id="Curve_6qt5y"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.891234, 100), 401.959, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_7q8d1"]
+_data = [Vector2(0.00378788, 1), 0.0, 0.0, 0, 0, Vector2(0.618506, 0.698034), -1.93762, -1.93762, 0, 0, Vector2(1, 0), -0.0633051, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_8wxmg"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Flagpole" type="StaticBody2D" groups=["flagpole"]]
 collision_layer = 64
 collision_mask = 64
 script = ExtResource("1_a52sk")
@@ -73,3 +125,45 @@ material = ExtResource("1_wfukn")
 position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_p8nru")
 frame_progress = 0.909591
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, -32)
+emitting = false
+amount = 32
+lifetime = 2.0
+one_shot = true
+speed_scale = 1.3
+explosiveness = 1.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_a52sk")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(0, -32)
+emitting = false
+amount = 32
+lifetime = 2.0
+one_shot = true
+speed_scale = 1.3
+explosiveness = 0.95
+randomness = 0.9
+lifetime_randomness = 0.5
+local_coords = true
+direction = Vector2(0, -1)
+spread = 25.0
+gravity = Vector2(0, 130)
+initial_velocity_min = 50.0
+initial_velocity_max = 120.0
+angular_velocity_min = -330.0
+angular_velocity_max = 300.0
+damping_min = 1.0
+damping_max = 3.0
+damping_curve = SubResource("Curve_6qt5y")
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 1.5
+scale_amount_max = 2.5
+scale_amount_curve = SubResource("Curve_7q8d1")
+color_initial_ramp = SubResource("Gradient_a52sk")
+hue_variation_min = -0.3
+hue_variation_max = 0.3
+hue_variation_curve = SubResource("Curve_8wxmg")

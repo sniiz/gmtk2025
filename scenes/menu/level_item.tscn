@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dsnx1eivksm8"]
+
+[ext_resource type="StyleBox" uid="uid://cgiw3obs0ipdv" path="res://scenes/menu/level_item_complete.tres" id="1_mgjxa"]
+[ext_resource type="Script" uid="uid://dokadp1mjqpxb" path="res://scenes/menu/level_item.gd" id="1_ta5if"]
+[ext_resource type="FontFile" uid="uid://bflcihf6nhsli" path="res://assets/common/fonts/Jersey15-Regular.ttf" id="1_viynn"]
+
+[node name="LevelItem" type="PanelContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(40, 40)
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = ExtResource("1_mgjxa")
+script = ExtResource("1_ta5if")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer"]
+modulate = Color(0.0313726, 0.0784314, 0.117647, 1)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_viynn")
+theme_override_font_sizes/font_size = 27
+text = "1"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

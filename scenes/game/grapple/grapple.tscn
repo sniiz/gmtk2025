@@ -57,7 +57,6 @@ collision_layer = 16
 collision_mask = 0
 input_pickable = true
 script = ExtResource("2_4wo5s")
-spin_speed = null
 
 [node name="Grapple" type="Sprite2D" parent="."]
 texture = ExtResource("2_a1urg")

@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bql784442i3pp"]
+[gd_scene load_steps=20 format=3 uid="uid://bql784442i3pp"]
 
 [ext_resource type="Script" uid="uid://b25q4ytl1giyh" path="res://scenes/game_manager.gd" id="1_uwrxv"]
 [ext_resource type="Shader" uid="uid://dom5cd6gdvxn3" path="res://assets/shaders/fade-transition.gdshader" id="2_yqjtg"]
+[ext_resource type="FontFile" uid="uid://exj50fvl7u5" path="res://assets/common/fonts/Tiny5-Regular.ttf" id="3_lbhrr"]
+[ext_resource type="FontFile" uid="uid://bflcihf6nhsli" path="res://assets/common/fonts/Jersey15-Regular.ttf" id="3_lnu2h"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lnu2h"]
 shader = ExtResource("2_yqjtg")
@@ -11,32 +13,13 @@ shader_parameter/pixel_size = 0.08
 shader_parameter/height = 1.0
 shader_parameter/disable_pixel = true
 
-[sub_resource type="Animation" id="Animation_yqjtg"]
-resource_name = "transition"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Transition:material:shader_parameter/height")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4995, 0.999),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [1.0, -1.0, 1.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Transition:rotation")
-tracks/1/interp = 0
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4995, 0.999),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 3.14159, 0.0]
-}
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lbhrr"]
+shader = ExtResource("2_yqjtg")
+shader_parameter/AspectRatio = 1.0
+shader_parameter/Diamonds = 20.0
+shader_parameter/pixel_size = 0.08
+shader_parameter/height = 1.0
+shader_parameter/disable_pixel = true
 
 [sub_resource type="Animation" id="Animation_lnu2h"]
 length = 0.001
@@ -65,10 +48,220 @@ tracks/1/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_yqjtg"]
+resource_name = "transition"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Transition:material:shader_parameter/height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4995, 0.999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, -1.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Transition:rotation")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4995, 0.999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 3.14159, 0.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lbhrr"]
 _data = {
 &"RESET": SubResource("Animation_lnu2h"),
 &"transition": SubResource("Animation_yqjtg")
+}
+
+[sub_resource type="Animation" id="Animation_lbhrr"]
+resource_name = "transition-ltr"
+
+[sub_resource type="Animation" id="Animation_iywne"]
+resource_name = "transition-rtl"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionSideways:material:shader_parameter/height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, -1.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionSideways:rotation")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.5708, 4.71239, 4.71239]
+}
+
+[sub_resource type="Animation" id="Animation_p57ef"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionSideways:material:shader_parameter/height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TransitionSideways:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u5sy4"]
+_data = {
+&"RESET": SubResource("Animation_p57ef"),
+&"transition-ltr": SubResource("Animation_lbhrr"),
+&"transition-rtl": SubResource("Animation_iywne")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqjtg"]
+content_margin_left = 20.0
+content_margin_right = 20.0
+bg_color = Color(0.0588235, 0.164706, 0.247059, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.764706, 0.639216, 0.541176, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbhrr"]
+content_margin_left = 20.0
+content_margin_right = 20.0
+bg_color = Color(0.12549, 0.223529, 0.309804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.964706, 0.839216, 0.741176, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.0588235, 0.164706, 0.247059, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.764706, 0.639216, 0.541176, 1)
+
+[sub_resource type="Animation" id="Animation_u5sy4"]
+resource_name = "reveal"
+length = 0.5
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Levels:clip_contents")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Levels:size")
+tracks/1/interp = 2
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(260, 0), Vector2(260, 185), Vector2(260, 185)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Levels:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, true]
+}
+
+[sub_resource type="Animation" id="Animation_gee14"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Levels:clip_contents")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Levels:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(260, 185)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Levels:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0tnpc"]
+_data = {
+&"RESET": SubResource("Animation_gee14"),
+&"reveal": SubResource("Animation_u5sy4")
 }
 
 [node name="Game" type="Node2D" groups=["game_mgr"]]
@@ -90,7 +283,142 @@ grow_vertical = 2
 pivot_offset = Vector2(320, 180)
 mouse_filter = 2
 
+[node name="TransitionSideways" type="ColorRect" parent="CanvasLayer"]
+z_index = 4
+texture_filter = 1
+material = SubResource("ShaderMaterial_lbhrr")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 140.0
+offset_top = -140.0
+offset_right = -140.0
+offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5708
+pivot_offset = Vector2(180, 320)
+mouse_filter = 2
+
 [node name="TransitionAnimator" type="AnimationPlayer" parent="CanvasLayer"]
 libraries = {
 &"": SubResource("AnimationLibrary_lbhrr")
 }
+
+[node name="TransitionSidewaysAnim" type="AnimationPlayer" parent="CanvasLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_u5sy4")
+}
+
+[node name="MainMenu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MainMenu"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 56.0
+offset_bottom = 56.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yqjtg")
+
+[node name="Label" type="Label" parent="CanvasLayer/MainMenu/PanelContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_fonts/font = ExtResource("3_lnu2h")
+theme_override_font_sizes/font_size = 27
+text = "COOL GAME LOGO HERE"
+
+[node name="ContinueButton" type="Button" parent="CanvasLayer/MainMenu"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -18.0
+offset_right = 141.0
+offset_bottom = 18.0
+grow_vertical = 2
+theme_override_colors/font_hover_pressed_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_colors/font_hover_color = Color(0.964706, 0.839216, 0.741176, 1)
+theme_override_colors/font_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_colors/font_focus_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_colors/font_pressed_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_fonts/font = ExtResource("3_lbhrr")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/focus = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lbhrr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_yqjtg")
+text = "Loading..."
+
+[node name="LevelsButton" type="Button" parent="CanvasLayer/MainMenu"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = 30.0
+offset_right = 141.0
+offset_bottom = 66.0
+grow_vertical = 2
+theme_override_colors/font_hover_pressed_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_colors/font_hover_color = Color(0.964706, 0.839216, 0.741176, 1)
+theme_override_colors/font_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_colors/font_focus_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_colors/font_pressed_color = Color(0.764706, 0.639216, 0.541176, 1)
+theme_override_fonts/font = ExtResource("3_lbhrr")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/focus = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_yqjtg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lbhrr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_yqjtg")
+text = "View levels"
+
+[node name="Levels" type="PanelContainer" parent="CanvasLayer/MainMenu"]
+visible = false
+clip_contents = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 151.0
+offset_top = -18.0
+offset_right = 411.0
+offset_bottom = 167.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_iywne")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MainMenu/Levels"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MainMenu/Levels/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 5
+
+[node name="LevelsAnimator" type="AnimationPlayer" parent="CanvasLayer/MainMenu"]
+libraries = {
+&"": SubResource("AnimationLibrary_0tnpc")
+}
+
+[connection signal="pressed" from="CanvasLayer/MainMenu/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/LevelsButton" to="." method="_on_levels_button_pressed"]
