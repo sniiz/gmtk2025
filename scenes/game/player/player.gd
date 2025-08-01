@@ -23,6 +23,8 @@ var grapple_max_momentum : float
 var is_immobile := false
 var is_dead := false
 
+var has_moved := false
+
 @onready var rope_prefab := preload("res://scenes/game/player/rope.tscn")
 
 func reset() -> void:
@@ -55,7 +57,11 @@ func set_grappled(state: bool, grapple_path=null) -> void:
 func _process(delta: float) -> void:
 	if is_dead: return
 	var input := Input.get_axis("left", "right") if !is_immobile else 0.0
-	if input != 0.0: last_input = input
+	if input != 0.0:
+		last_input = input
+		if !has_moved:
+			has_moved = true
+			get_tree().get_first_node_in_group("timer").active = true
 
 	$Sprite.scale.x = last_input
 	$AnimatedSprite2D.scale.x = last_input
@@ -89,6 +95,9 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump"):
 		buffered_jump = true
 		$JumpBufferTimer.start()
+		if !has_moved:
+			has_moved = true
+			get_tree().get_first_node_in_group("timer").active = true
 
 	if buffered_jump and (is_on_floor() || coyote) and !is_immobile:
 		velocity.y = -jump_impulse
@@ -145,6 +154,7 @@ func _on_hurtbox_body_entered(body: Node2D) -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	is_immobile = true
+	get_tree().get_first_node_in_group("timer").active = false
 	get_tree().get_first_node_in_group("flagpole").emit()
 	$LevelEndTimer.start()
 	var config := ConfigFile.new()
@@ -155,6 +165,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		get_tree().reload_current_scene()
 		return
 	var saved_progress : int = config.get_value("completion", "progress", 0)
+	var saved_pb : float = config.get_value("pb", str(get_parent().level_index), -1.0)
+	saved_pb = INF if saved_pb == -1.0 else saved_pb
+	config.set_value("pb", str(get_parent().level_index), min(get_tree().get_first_node_in_group("timer").time_msec, saved_pb))
+	if saved_pb > get_tree().get_first_node_in_group("timer").time_msec:
+		get_tree().get_first_node_in_group("timer").new_pb()
 	config.set_value("completion", "progress", max(saved_progress, get_parent().next_level_index))
 	config.save("user://save.cfg")
 

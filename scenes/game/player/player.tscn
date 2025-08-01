@@ -304,11 +304,11 @@ script = ExtResource("15_jvpd5")
 noise = SubResource("FastNoiseLite_jvpd5")
 
 [node name="CoyoteTimer" type="Timer" parent="."]
-wait_time = 0.08
+wait_time = 0.1
 one_shot = true
 
 [node name="JumpBufferTimer" type="Timer" parent="."]
-wait_time = 0.05
+wait_time = 0.1
 one_shot = true
 
 [node name="LevelEndTimer" type="Timer" parent="."]

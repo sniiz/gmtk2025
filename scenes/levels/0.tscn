@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://clp0qeyfeml1x"]
+[gd_scene load_steps=10 format=4 uid="uid://clp0qeyfeml1x"]
 
 [ext_resource type="Script" uid="uid://cxisk42dg0jep" path="res://scenes/levels/generic_descriptor.gd" id="1_u5gin"]
 [ext_resource type="PackedScene" uid="uid://cnnyqbsy8fpgj" path="res://scenes/game/grapple/grapple.tscn" id="3_u5gin"]
@@ -6,8 +6,14 @@
 [ext_resource type="FontFile" uid="uid://exj50fvl7u5" path="res://assets/common/fonts/Tiny5-Regular.ttf" id="5_1wyne"]
 [ext_resource type="TileSet" uid="uid://d5gmktykbsjy" path="res://assets/tiles/tileset.tres" id="5_u5gin"]
 [ext_resource type="PackedScene" uid="uid://cjma6jet5qnfk" path="res://scenes/game/misc/flagpole.tscn" id="6_1wyne"]
+[ext_resource type="PackedScene" uid="uid://tvvpfyjcv8ok" path="res://scenes/game/misc/timer.tscn" id="7_oi4me"]
+[ext_resource type="PackedScene" uid="uid://4vrsch50218" path="res://scenes/game/misc/camera_area.tscn" id="8_b1hel"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4m6j3"]
+size = Vector2(640, 360)
 
 [node name="Level" type="Node2D" groups=["level"]]
+process_mode = 1
 texture_filter = 1
 script = ExtResource("1_u5gin")
 
@@ -111,3 +117,12 @@ spin_speed = -0.8
 
 [node name="Flagpole" parent="." instance=ExtResource("6_1wyne")]
 position = Vector2(1733, -667)
+
+[node name="Timer" parent="." instance=ExtResource("7_oi4me")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1656, -613)
+enabled = false
+
+[node name="CameraArea" parent="Camera2D" instance=ExtResource("8_b1hel")]
+shape = SubResource("RectangleShape2D_4m6j3")

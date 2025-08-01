@@ -1,6 +1,7 @@
 extends Node2D
 
 var level : Node2D
+var current_level_id : Variant = null
 @onready var player_prefab := preload("res://scenes/game/player/player.tscn")
 @onready var level_item_prefab := preload("res://scenes/menu/level_item.tscn")
 
@@ -21,6 +22,8 @@ var level : Node2D
 		music_vol = value
 @export var level_count := 2 # todo figure out a way to not hardcode this
 
+var is_paused := false
+
 func load_level(level_id: int) -> void:
 	if !ResourceLoader.exists("res://scenes/levels/%s.tscn" % level_id, "PackedScene"):
 		push_error("Can't load level %s - no such scene exists" % level_id)
@@ -30,6 +33,7 @@ func load_level(level_id: int) -> void:
 	await get_tree().process_frame # i have no idea what these awaits accomplish but their absence makes the player spawn weird
 	level = load("res://scenes/levels/%s.tscn" % level_id).instantiate()
 	add_child(level)
+	current_level_id = level_id
 	var spawner := get_tree().get_first_node_in_group("player_spawner")
 	var player_pos := Vector2.ZERO
 	if !spawner:
@@ -39,6 +43,10 @@ func load_level(level_id: int) -> void:
 	await get_tree().process_frame
 	var player := player_prefab.instantiate()
 	level.add_child(player)
+	var config := ConfigFile.new()
+	var err := config.load("user://save.cfg")
+	if !err:
+		get_tree().get_first_node_in_group("timer").pb = config.get_value("pb", str(level_id), -1.0)
 	await get_tree().process_frame
 	player.global_position = player_pos
 
@@ -49,6 +57,9 @@ func side_transition(is_ltr:=false) -> void:
 	$CanvasLayer/TransitionSidewaysAnim.play("transition-rtl", -1, -1 if is_ltr else 1, is_ltr)
 
 func _ready() -> void:
+	get_window().focus_exited.connect(func():
+		if level: set_paused(true)
+		)
 	var config := ConfigFile.new()
 	var err := config.load("user://save.cfg")
 	if err:
@@ -89,3 +100,29 @@ func _on_levels_button_pressed() -> void:
 		$CanvasLayer/MainMenu/LevelsAnimator.play_backwards("reveal")
 	else:
 		$CanvasLayer/MainMenu/LevelsAnimator.play("reveal")
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("reset"):
+		$ResetTimer.start()
+	if Input.is_action_just_released("reset"):
+		$ResetTimer.stop()
+
+	if Input.is_action_just_pressed("pause"):
+		set_paused(!is_paused)
+
+func set_paused(value: bool) -> void:
+	is_paused = value
+	$CanvasLayer/PauseMenu.visible = value and level
+	get_tree().paused = is_paused
+
+func _on_reset_timer_timeout() -> void:
+	print("RESET TIMEOUT")
+	if current_level_id != null:
+		load_level_fancy(current_level_id)
+
+func _on_resume_button_pressed() -> void:
+	set_paused(false)
+
+func _on_back_to_menu_button_pressed() -> void:
+	set_paused(false)
+	get_tree().reload_current_scene()

@@ -40,7 +40,6 @@ _data = {
 }
 
 [node name="Timer" type="CanvasLayer" groups=["timer"]]
-process_mode = 1
 script = ExtResource("1_husg0")
 
 [node name="Label" type="Label" parent="."]
